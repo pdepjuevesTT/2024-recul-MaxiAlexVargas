@@ -51,6 +51,9 @@ esUnBarrioCopado(Barrio):-
 esUnBarrioCopado(Barrio):-
     ubicacion(Barrio,[Personas | _ ]),tieneUnLoftCopado(Personas).
 
+esUnInfiernoChico(Barrio):-
+    not(esUnBarrioCopado(Barrio)).
+
 % Punto 3
 tieneUnaCasaBarata(Persona):-
     casa(Persona,Metros_Cuadrados), Metros_Cuadrados  < 90.
@@ -95,13 +98,15 @@ sublista([ Cabeza | Cola],[ Cabeza | Sublista]):- sublista(Cola,Sublista).
     
 sublista([_ | Cola],Sublista):- sublista(Cola,Sublista).
 
-comprasRealizadas(Restos,[Propietario]):-
-    findall(Resto,distinct(Resto,restoPorCompra(Resto,[Propietario])),RestosPosibles),
-    sublista(RestosPosibles,Restos).
-
+restoPorComprasRealizadas(Restos,Propietarios):-
+    findall(Resto,distinct(Resto,restoPorCompra(Resto,_)),RestosPosibles),
+    sublista(RestosPosibles,Restos),
+    vendedores(Propietarios).
+    
 vendedores(Propietarios):-
     findall(Propietario,distinct(Propietario,inmueble(Propietario,_)),PropietariosRegistrados),
     sublista(PropietariosRegistrados,Propietarios).
+
 
 
 
