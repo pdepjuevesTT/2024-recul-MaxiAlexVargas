@@ -87,11 +87,21 @@ sePuedeComprarCasasCon250000_a(Propietarios):-
 
 restoPorCompra(Resto,Propietario):-
     inmueble(Propietario,Precio),
-    Resto is Precio - 1000.
+    Resto is 250000 - Precio.
+
+sublista([ ],[ ]).
+
+sublista([ Cabeza | Cola],[ Cabeza | Sublista]):- sublista(Cola,Sublista).
     
+sublista([_ | Cola],Sublista):- sublista(Cola,Sublista).
 
+comprasRealizadas(Restos,[Propietario]):-
+    findall(Resto,distinct(Resto,restoPorCompra(Resto,[Propietario])),RestosPosibles),
+    sublista(RestosPosibles,Restos).
 
-
+vendedores(Propietarios):-
+    findall(Propietario,distinct(Propietario,inmueble(Propietario,_)),PropietariosRegistrados),
+    sublista(PropietariosRegistrados,Propietarios).
 
 
 
